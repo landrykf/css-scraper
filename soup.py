@@ -6,6 +6,8 @@ import cssutils
 import logging
 cssutils.log.setLevel(logging.CRITICAL)
 
+import json
+
 pages = ['index.html','portfolio.html','contact.html','projetPortfolio.html', 'jsBreaker.html']
 
 for i in pages:
@@ -26,25 +28,29 @@ for i in pages:
 
 
 for i in css_files:
+    data = []
     #lien des fichiers css
     print(i)
+    data.append(i)
 
     css_urls = i
     response = requests.get(css_urls)
     css = response.content
 
     sheet = cssutils.parseString(css)
-    # print(sheet)
     #dictionnaire des attributs
     results = {}
     for rule in sheet:
         if rule.type == rule.STYLE_RULE:
             for prop in rule.style:
-                # print(prop)
                 if prop.name:
+                    # print(rule.style)
                     results[rule.selectorText] = [prop.name + ' : ' + prop.value]
-    print(results)
+    data.append(results)
+    # print(results)
+    print(data)
 
-# with open("css_files.txt", "w") as f:
-#     for css_file in css_files:
-#         print(css_file, file=f)
+
+with open("scraper.json", "w") as writeJSON:
+    json.dump(data, writeJSON, ensure_ascii=False)
+
