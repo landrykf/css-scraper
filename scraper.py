@@ -43,7 +43,6 @@ for i in css_files:
         if rule.type == rule.STYLE_RULE:
             for prop in rule.style:
                 if prop.name:
-                    # print(rule.style)
                     results[rule.selectorText] = [prop.name + ' : ' + prop.value]
     data[i]=(results)
     print(results)
