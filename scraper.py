@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
 import cssutils
-#Supprimer les messages d'erreur et d'avertissement
+#Delete error and warning messages
 import logging
 cssutils.log.setLevel(logging.CRITICAL)
 
@@ -15,21 +15,21 @@ for i in pages:
     url = 'http://koffi.me/views/' + (i)
 
     response = requests.get(url)
-    #je parse la réponse de ma requete get 
+    #parse the answer of the request get 
     soup = BeautifulSoup(response.text, 'lxml')
 
     css_files = []
     links = soup.find_all("link")
     for css in links:
         if css.attrs.get("href"):
-            #si link a l'attribut 'href'.
+            #if link has the attribute 'href'.
             css_url = urljoin(url, css.attrs.get("href"))
             css_files.append(css_url)
 
 data = {}
 
 for i in css_files:
-    #lien des fichiers css
+    #link of css files
     print(i)
 
     css_urls = i
@@ -37,7 +37,7 @@ for i in css_files:
     css = response.content
 
     sheet = cssutils.parseString(css)
-    #dictionnaire des attributs
+    #attributes dictionary
     results = {}
     for rule in sheet:
         if rule.type == rule.STYLE_RULE:
